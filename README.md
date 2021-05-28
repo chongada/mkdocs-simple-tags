@@ -42,7 +42,7 @@ Edit `mkdocs.yml` to include this plugin:
 
 ```
 plugins:
-  - tags:
+  - simple-tags
 ```
 
 Run the server:
@@ -95,7 +95,7 @@ For example, this can be put at `mkdocs.yaml`:
 ```
 plugins:
     - search
-    - tags:
+    - simple-tags:
         tags_folder: /tmp/mysite/aux
         tags_template: docs/theme/tags.md.template
 ```
