@@ -1,18 +1,17 @@
-# Tags
+# Mkdocs Simple Tags
 
-Support for tags in the yaml-metadata in the header of markdown files.
+Support for tags in the yaml-metadata (front matter) in the header of markdown files.
 
-Extracts this metadata and creates a "Tags" page which lists all tags and all pages for each tag.
+Extracts this metadata and creates a "Tags" page organizes all documents under corresponding tags. Only
+documents with tags metadata defined will be on this "Tags" page.
 
 ## Quick Demo
 
 Install this plugin (it will also install mkdocs if required)
 
 ```shell
-$ pip install git+https://github.com/jldiaz/mkdocs-plugin-tags.git
+$ pip install git+https://github.com/taivo/mkdocs-simple-tags.git
 ```
-
-> **Note**. Since this package is in alpha stage, it is not yet available from pypi, so the only way to install it is via git.
 
 Create a new documentation folder:
 
@@ -20,7 +19,8 @@ Create a new documentation folder:
 $ mkdocs new demo
 ```
 
-Edit the `.md` files to add initial metadata. Currently, the metadata has to be enclosed in `---` lines, and must include a `title:` property (otherwise the page will appear as "untitled" in the tags page). So, for example:
+Edit the `.md` files to add initial metadata. If you don't specify the `title` attribute, the 
+header of the markdown document will be used. Here is an example:
 
 ```
 $ cd demo
@@ -30,13 +30,12 @@ $ cat > index.md
 title: Welcome
 tags:
  - testing
- - unimportant
+ - another-tag
 ---
-# Welcome to MkDocs
+# Welcome To The World of Mkdocs
 
-For full documentation visit [mkdocs.org](https://mkdocs.org).
+Lorem ipsum
 
-^D
 ```
 
 Edit `mkdocs.yml` to include this plugin:
@@ -101,7 +100,7 @@ plugins:
         tags_template: docs/theme/tags.md.template
 ```
 
-# TODO
+## TODO
 
 * Better integration with themes (tested with Material, looks good)
 * Make visible the tags in each page? Currently, they are "invisible metadata". The author can provide a jinja2 custom "main" template which renders them from `page.meta.tags`, but perhaps it could be useful that the plugin rewrites the markdown of each page (on page load), to add this metadata as part of the "visible" markdown.

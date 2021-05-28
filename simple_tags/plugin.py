@@ -2,23 +2,25 @@
 # Main part of the plugin
 #
 # JL Diaz (c) 2019
+# Tai Vo (c) 2021
 # MIT License
 # --------------------------------------------
 from collections import defaultdict
 from pathlib import Path
 import jinja2
+import os
 from mkdocs.structure.files import File
 from mkdocs.plugins import BasePlugin
 from mkdocs.config.config_options import Type
 from mkdocs.utils import meta as meta_util, get_markdown_title
 
 
-class TagsPlugin(BasePlugin):
+class SimpleTagsPlugin(BasePlugin):
     """
-    Creates "tags.md" file containing a list of the pages grouped by tags
+    Creates "tags.md" file containing a list of the pages grouped by simple_tags
 
     It uses the info in the YAML metadata of each page, for the pages which
-    provide a "tags" keyword (whose value is a list of strings)
+    provide a "simple_tags" keyword (whose value is a list of strings)
     """
 
     config_scheme = (
@@ -33,15 +35,15 @@ class TagsPlugin(BasePlugin):
         self.tags_folder = "_aux"
         self.tags_template = None
 
-    def on_nav(self, nav, config, files):
-        # nav.items.insert(1, nav.items.pop(-1))
-        pass
+    # def on_nav(self, nav, config, files):
+    #     # nav.items.insert(1, nav.items.pop(-1))
+    #     pass
 
     def on_config(self, config):
         # Re assign the options
         self.tags_filename = Path(self.config.get("tags_filename") or self.tags_filename)
         self.tags_folder = Path(self.config.get("tags_folder") or self.tags_folder)
-        # Make sure that the tags folder is absolute, and exists
+        # Make sure that the simple_tags folder is absolute, and exists
         if not self.tags_folder.is_absolute():
             self.tags_folder = Path(config["docs_dir"]) / ".." / self.tags_folder
         if not self.tags_folder.exists():
@@ -51,13 +53,14 @@ class TagsPlugin(BasePlugin):
             self.tags_template = Path(self.config.get("tags_template"))
 
     def on_files(self, files, config):
-        # Scan the list of files to extract tags from meta
+        # Scan the list of files to extract simple_tags from meta
         for f in files:
-            if not f.src_path.endswith(".md"):
+            _, extension = os.path.splitext(f.src_path)
+            if extension not in (".md", ".markdown"):
                 continue
             self.metadata.append(get_metadata(f.src_path, config["docs_dir"]))
 
-        # Create new file with tags
+        # Create the new "Tags" index file
         self.generate_tags_file()
 
         # New file to add to the build
@@ -92,8 +95,6 @@ class TagsPlugin(BasePlugin):
         for e in sorted_meta:
             if not e:
                 continue
-            if "title" not in e:
-                e["title"] = "Untitled"
             tags = e.get("tags", [])
             if tags is not None:
                 for tag in tags:
@@ -105,8 +106,9 @@ class TagsPlugin(BasePlugin):
             f.write(t)
 
 
+#
 # Helper functions
-
+#
 
 def get_metadata(name, path):
     filename = Path(path) / Path(name)

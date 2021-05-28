@@ -1,28 +1,21 @@
-# --------------------------------------------
-# Setup file for the package
-#
-# JL Diaz (c) 2019
-# --------------------------------------------
-
 import os
 from setuptools import setup, find_packages
 
 
 def read_file(fname):
-    "Read a local file"
+    """Read a local file"""
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
 setup(
-    name='mkdocs-plugin-tags',
-    version='0.4.0',
-    description="Processes tags in yaml metadata",
+    name='mkdocs-simple-tags',
+    version='0.5.1',
+    description="Allow the usage of simple_tags specified in each markdown document's metadata",
     long_description=read_file('README.md'),
     long_description_content_type='text/markdown',
-    keywords='mkdocs python markdown tags',
+    keywords='mkdocs markdown tags',
     url='',
-    author='JL Diaz',
-    author_email='jldiaz@gmail.com',
+    author='Tai Vo',
     license='MIT',
     python_requires='>=3.6',
     install_requires=[
@@ -30,7 +23,7 @@ setup(
         'jinja2',
     ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: MIT License',
@@ -39,10 +32,10 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     packages=find_packages(exclude=['*.tests']),
-    package_data={'tags': ['templates/*.md.template']},
+    package_data={'simple_tags': ['templates/*.md.template']},
     entry_points={
         'mkdocs.plugins': [
-            'tags = tags.plugin:TagsPlugin'
+            'simple-tags = simple_tags.plugin:SimpleTagsPlugin'
         ]
     }
 )
