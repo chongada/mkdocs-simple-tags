@@ -6,7 +6,6 @@
 # --------------------------------------------
 from collections import defaultdict
 from pathlib import Path
-import yaml
 import jinja2
 from mkdocs.structure.files import File
 from mkdocs.plugins import BasePlugin
@@ -24,14 +23,14 @@ class TagsPlugin(BasePlugin):
 
     config_scheme = (
         ('tags_filename', Type(str, default='tags.md')),
-        ('tags_folder', Type(str, default='aux')),
+        ('tags_folder', Type(str, default='_aux')),
         ('tags_template', Type(str)),
     )
 
     def __init__(self):
         self.metadata = []
         self.tags_filename = "tags.md"
-        self.tags_folder = "aux"
+        self.tags_folder = "_aux"
         self.tags_template = None
 
     def on_nav(self, nav, config, files):
@@ -66,13 +65,13 @@ class TagsPlugin(BasePlugin):
             path=str(self.tags_filename),
             src_dir=str(self.tags_folder),
             dest_dir=config["site_dir"],
-            use_directory_urls=False
+            use_directory_urls=True
         )
         files.append(newfile)
 
     def generate_tags_page(self, data):
         if self.tags_template is None:
-            templ_path = Path(__file__).parent  / Path("templates")
+            templ_path = Path(__file__).parent / Path("templates")
             environment = jinja2.Environment(
                 loader=jinja2.FileSystemLoader(str(templ_path))
                 )
