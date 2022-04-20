@@ -17,7 +17,7 @@ setup(
     url='',
     author='Tai Vo',
     license='MIT',
-    python_requires='>=3.6',
+    python_requires='>=2.7',
     install_requires=[
         'mkdocs>=1.1',
         'jinja2',
